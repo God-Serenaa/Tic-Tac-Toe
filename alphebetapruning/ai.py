@@ -1,4 +1,4 @@
-class MinMax:
+class AlphaBeta:
     #To do that, we'll have a max() method that the AI 
     #uses for making optimal decisions.
     # Player 'O' is max, in this case AI

@@ -1,5 +1,5 @@
 import pygame, sys
-from ai import AlphaBeta
+from ai import CSP
 from constants import *
 
 pygame.init()
@@ -96,36 +96,28 @@ class Board:
         return '.'
 
 
-class Game(Board, AlphaBeta):
-    
-
-    def print_result(self, player):
-        font = pygame.font.Font('freesansbold.ttf', 32)
-        if player:
-            text = font.render('WINNER IS {}'.format(player), True, (255, 255, 255))
-        else:
-            text = font.render('IT IS A TIE', True, (255, 255, 255))
-        textRect = text.get_rect()
-        textRect.center = (WIDTH//2, HEIGHT//2)
-        screen.blit(text, textRect)
+class Game(Board, CSP):
   
     def play(self):
-        
         while True:
             self.draw_board()
             self.result = self.is_end()
 
+            # Printing the appropriate message if the game has ended
             if self.result != None:
                 if self.result == 'X':
-                    self.print_result('X')
+                    print('The winner is X!')
                 elif self.result == 'O':
-                    self.print_result('O')
+                    print('The winner is O!')
                 elif self.result == '.':
-                    self.print_result(None)
+                    print("It's a tie!")
 
                 self.initialize_game()
+                return
 
+            # If it's player's turn
             if self.player_turn == 'X':
+
                 while True:
                     flag = 0
                     for event in pygame.event.get():
@@ -148,9 +140,11 @@ class Game(Board, AlphaBeta):
                     if flag == 1: break
                     pygame.display.update()
 
+            # If it's AI's turn
             else:
-                (m, px, py) = self.max()
+                (px, py) = self.next_move()
                 self.current_state[px][py] = 'O'
                 self.player_turn = 'X'
+
 
 Game().play()
