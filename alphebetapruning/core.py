@@ -110,6 +110,8 @@ class Game(Board, AlphaBeta):
         screen.blit(text, textRect)
   
     def play(self):
+        alpha = -10
+        beta = 10
         
         while True:
             self.draw_board()
@@ -149,7 +151,7 @@ class Game(Board, AlphaBeta):
                     pygame.display.update()
 
             else:
-                (m, px, py) = self.max()
+                (m, px, py) = self.max(alpha, beta)
                 self.current_state[px][py] = 'O'
                 self.player_turn = 'X'
 
